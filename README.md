@@ -1,156 +1,108 @@
 WhateverBlue
 =============
 
-[![Build Status](https://github.com/acidanthera/WhateverBlue/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/acidanthera/WhateverBlue/actions) [![Scan Status](https://scan.coverity.com/projects/16177/badge.svg?flat=1)](https://scan.coverity.com/projects/16177)
+[![构建状态](https://github.com/acidanthera/WhateverBlue/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/acidanthera/WhateverBlue/actions) [![扫描状态](https://scan.coverity.com/projects/16177/badge.svg?flat=1)](https://scan.coverity.com/projects/16177)
 
-[Lilu](https://github.com/acidanthera/Lilu) plugin providing patches to select GPUs on macOS. Requires Lilu 1.5.6 or newer.
+[Lilu](https://github.com/acidanthera/Lilu) 插件，用于在 macOS 上为特定 GPU 提供补丁。需要 Lilu 1.5.6 或更高版本。
 
-#### Features
+#### 功能
 
-- Fixes boot to black screen on AMD and NVIDIA
-- Fixes sleep wake to black screen on AMD
-- Fixes boot screen distortion in certain cases
-- Fixes transmitter/encoder in autodetected connectors for multimonitor support (`-raddvi`)
-- Fixes HD 7730/7750/7770/R7 250/R7 250X initialisation (`radpg=15`)
-- Allows tuning of aty_config, aty_properties, cail_properties via ACPI
-- Allows enforcing 24-bit mode on unsupported displays (`-rad24`)
-- Allows booting without video acceleration (`-radvesa`)
-- Allows automatically setting GPU model name or providing it manually for RadeonFramebuffer
-- Allows specifying custom connectors via device properties for RadeonFramebuffer
-- Allows tuning autodetected connector priority via device properties (HD 7xxx or newer)
-- Fixes an issue in AppleGraphicsDevicePolicy.kext so that we could use a MacPro6,1 board-id/model combination,  without the usual hang with a black screen. [Patching AppleGraphicsDevicePolicy.kext](https://pikeralpha.wordpress.com/2015/11/23/patching-applegraphicsdevicepolicy-kext)
-- Modifies macOS to recognize NVIDIA's web drivers as platform binaries. This resolves the issue with transparent windows without content, which appear for applications that use Metal and have Library Validation enabled. Common affected applications are iBooks and Little Snitch Network Monitor, though this patch is universal and fixes them all. [NVWebDriverLibValFix](https://github.com/mologie/NVWebDriverLibValFix)
-- Injects IOVARendererID into GPU properties (required for Shiki-based solution for non-freezing Intel and/or any discrete GPU)
-- For Intel HD digital audio HDMI, DP, Digital DVI (Patches connector-type DP -> HDMI)
-- Fixes NVIDIA GPU interface stuttering on 10.13 (official and web drivers)
-- Fixes the kernel panic caused by an invalid link rate reported by DPCD on some laptops with Intel IGPU.
-- Fixes the infinite loop on establishing Intel HDMI connections with a higher pixel clock rate on Skylake, Kaby Lake and Coffee Lake platforms.
-- Implements the driver support for onboard LSPCON chips to enable DisplayPort to HDMI 2.0 output on some platforms with Intel IGPU.
-- Enforces complete modeset on non-built-in displays on Kaby Lake and newer to fix booting to black screen.
-- Allows non-supported cards to use HW video encoder (`-radcodec`)
-- Fixes choppy video playback on Intel Kaby Lake and newer.
-- Fixes black screen on Intel HD since 10.15.5.
-- Adds workaround for rare force wake timeout panics on Intel KBL and CFL.
-- Supports all valid Core Display Clock (CDCLK) freqencies on Intel ICL platforms.
-- Fixes the kernel panic caused by an incorrectly calculated amount of DVMT pre-allocated memory on Intel ICL platforms.
-- Makes brightness transitions smoother on Intel IVB+ platforms.
-- Fixes the short period garbled screen issue after the system boots on Intel ICL platforms.
-- Fixes the PWM backlight control of the built-in display that is directly wired to AMD Radeon RX 5000 series graphic cards.
-- Fixes the freeze during iGPU initialization that may occur on certain laptops such as Chromebooks on macOS 10.15 and later.
+- 修复因部分笔记本电脑的 Intel IGPU 报告无效 DPCD 链路速率导致的内核崩溃。
+- 修复 Skylake、Kaby Lake 和 Coffee Lake 平台在高像素时钟率下建立 Intel HDMI 连接时的无限循环问题。
+- 在 Kaby Lake 及更新平台上强制对非内置显示器执行完整模式设置，以解决启动黑屏问题。
+- 修复 Intel Kaby Lake 及更新平台的视频播放卡顿问题。
+- 为 Intel KBL 和 CFL 平台上罕见的强制唤醒超时崩溃提供临时解决方案。
+- 支持 Intel ICL 平台所有有效的核心显示时钟（CDCLK）频率。
+- 修复因 Intel ICL 平台错误计算 DVMT 预分配内存导致的内核崩溃。
 
-#### Documentation
+#### 文档
 
-Read [FAQs](./Manual/) and avoid asking any questions. No support is provided for the time being.
+请阅读 [常见问题解答](./Manual/)，避免提问。目前暂不提供技术支持。
 
-#### Boot arguments
+#### 启动参数
 
-##### Global
+##### 全局参数
 
-| Boot argument 	| DeviceProperties 	| Description 	|
-|---	|---	|---	|
-| `-cdfon` 			  | `enable-hdmi20`  | Enable HDMI 2.0 patches on iGPU and dGPU (Not implemented for macOS 11+)  |
-| `-webbeta` 		  | N/A 	| Enable WhateverBlue on unsupported OS versions (15 and below are enabled by default) 	|
-| `-webdbg` 		  | N/A 	| Enable debug printing (available in DEBUG binaries) 	|
-| `-weboff` 		  | N/A 	| Disable WhateverBlue 	|
+| 启动参数       | 设备属性（DeviceProperties） | 描述                                                                 |
+|----------------|-----------------------------|----------------------------------------------------------------------|
+| `-webbeta`     | 无                          | 在不受支持的 macOS 版本（默认启用 15 及以下版本）上启用 WhateverBlue |
+| `-webdbg`      | 无                          | 启用调试输出（仅在 DEBUG 版本中可用）                                 |
+| `-weboff`      | 无                          | 禁用 WhateverBlue                                                   |
 
-##### Switch GPU
+##### 切换 GPU
 
-| Boot argument 	| DeviceProperties 	| Description 	|
-|---	|---	|---	|
-| `-webnoegpu` 		| `disable-gpu` property to each GFX0 	| Disable all external GPUs 	|
-| `-webnoigpu` 		| `disable-gpu` property to IGPU 	| Disable internal GPU 	|
-| `-webswitchgpu` | `switch-to-external-gpu` property to IGPU 	| Disable internal GPU when external GPU is installed 	|
+| 启动参数          | 设备属性（DeviceProperties）                 | 描述                                     |
+|-------------------|---------------------------------------------|------------------------------------------|
+| `-webnoegpu`      | 为每个 GFX0 添加 `disable-gpu` 属性          | 禁用所有外置 GPU                         |
+| `-webnoigpu`      | 为 IGPU 添加 `disable-gpu` 属性              | 禁用内置 GPU                             |
+| `-webswitchgpu`   | 为 IGPU 添加 `switch-to-external-gpu` 属性   | 当外置 GPU 存在时禁用内置 GPU            |
 
+##### Board-id 相关
 
-##### Board-id
+| 启动参数           | 设备属性（DeviceProperties）                 | 描述                                                                 |
+|--------------------|---------------------------------------------|----------------------------------------------------------------------|
+| `agdpmod=ignore`   | 为外置 GPU 添加 `agdpmod` 属性              | 禁用 AGDP 补丁（外置 GPU 默认隐式值为 `vit9696,pikera`）             |
+| `agdpmod=pikera`   | 为外置 GPU 添加 `agdpmod` 属性              | 将 `board-id` 替换为 `board-ix`                                      |
+| `agdpmod=vit9696`  | 为外置 GPU 添加 `agdpmod` 属性              | 禁用对 `board-id` 的检查                                             |
 
-| Boot argument 	  | DeviceProperties 	| Description 	|
-|---	|---	|---	  |
-| `agdpmod=ignore` 	| `agdpmod` property to external GPU 	| Disables AGDP patches (`vit9696,pikera` value is implicit default for external GPUs) 	|
-| `agdpmod=pikera` 	| `agdpmod` property to external GPU 	| Replaces `board-id` with `board-ix` 	|
-| `agdpmod=vit9696` | `agdpmod` property to external GPU 	| Disable check for `board-id` 	|
+##### Intel HD 显卡
 
-##### Nvidia
+| 启动参数                | 设备属性（DeviceProperties）                              | 描述                                                                 |
+|-------------------------|----------------------------------------------------------|----------------------------------------------------------------------|
+| `-igfxblr`              | 为 IGPU 添加 `enable-backlight-registers-fix` 属性        | 修复 KBL、CFL 和 ICL 平台的背光寄存器                                |
+| `-igfxbls`              | 为 IGPU 添加 `enable-backlight-smoother` 属性             | 在 IVB+ 平台上使亮度过渡更平滑。[阅读手册](./Manual/FAQ.IntelHD.en.md#customize-the-behavior-of-the-backlight-smoother-to-improve-your-experience) |
+| `-igfxblt`              | 为 IGPU 添加 `enable-backlight-registers-alternative-fix` 属性 | Backlight Registers Fix 的替代方案，支持在 macOS 13.4 或更高版本的 KBL/CFL 平台上启用 Backlight Smoother。[阅读手册](./Manual/FAQ.IntelHD.en.md#fix-the-3-minute-black-screen-issue-on-cfl-platforms-running-macos-134-or-later) |
+| `-igfxcdc`              | 为 IGPU 添加 `enable-cdclk-frequency-fix` 属性            | 支持 ICL 平台所有有效的核心显示时钟（CDCLK）频率。[阅读手册](./Manual/FAQ.IntelHD.en.md#support-all-possible-core-display-clock-cdclk-frequencies-on-icl-platforms) |
+| `-igfxdbeo`             | 为 IGPU 添加 `enable-dbuf-early-optimizer` 属性           | 修复 ICL+ 平台的显示数据缓冲区（DBUF）问题。[阅读手册](./Manual/FAQ.IntelHD.en.md#fix-the-issue-that-the-builtin-display-remains-garbled-after-the-system-boots-on-icl-platforms) |
+| `-igfxdump`             | 无                                                       | 将 IGPU 帧缓冲区驱动转储到 `/var/log/AppleIntelFramebuffer_X_Y`（仅 DEBUG 版本可用） |
+| `-igfxdvmt`             | 为 IGPU 添加 `enable-dvmt-calc-fix` 属性                  | 修复 Intel ICL 平台因错误计算 DVMT 预分配内存导致的内核崩溃          |
+| `-igfxfbdump`           | 无                                                       | 将原生和补丁后的帧缓冲区表转储到 IOReg 的 `IOService:/IOResources/WhateverBlue` |
+| `-igfxhdmidivs`         | 为 IGPU 添加 `enable-hdmi-dividers-fix` 属性              | 修复 SKL、KBL 和 CFL 平台在高像素时钟率下建立 HDMI 连接的无限循环问题 |
+| `-igfxi2cdbg`           | 无                                                       | 在 I2C-over-AUX 事务中启用详细输出（仅调试用途）                     |
+| `-igfxlspcon`           | 为 IGPU 添加 `enable-lspcon-support` 属性                 | 启用对板载 LSPCON 芯片的支持。[阅读手册](./Manual/FAQ.IntelHD.en.md#lspcon-driver-support-to-enable-displayport-to-hdmi-20-output-on-igpu) |
+| `-igfxmlr`              | 为 IGPU 添加 `enable-dpcd-max-link-rate-fix` 属性         | 应用最大链路速率修复                                                 |
+| `-igfxmpc`              | 为 IGPU 添加 `enable-max-pixel-clock-override` 和 `max-pixel-clock-frequency` 属性 | 提高最大像素时钟（替代修改 `CoreDisplay.framework`）                 |
+| `-igfxnohdmi`           | 为 IGPU 添加 `disable-hdmi-patches` 属性                  | 禁用 DP 转 HDMI 的数字音频补丁                                       |
+| `-igfxnotelemetryload`  | 为 IGPU 添加 `disable-telemetry-load` 属性                | 禁用可能导致部分笔记本（如 Chromebook）启动冻结的 iGPU 遥测加载      |
+| `-igfxsklaskbl`         | 无                                                       | 强制在 Skylake 机型上加载 Kaby Lake（KBL）显卡驱动（需 KBL 的 `device-id` 和 `ig-platform-id`，macOS 13+ 无需此参数） |
+| `-igfxtypec`            | 无                                                       | 强制为 Type-C 平台启用 DP 连接                                       |
+| `-igfxvesa`             | 无                                                       | 禁用 Intel 显卡硬件加速                                              |
+| `igfxagdc=0`            | 为 IGPU 添加 `disable-agdc` 属性                         | 禁用 AGDC                                                            |
+| `igfxfcms=1`            | 为 IGPU 添加 `complete-modeset` 属性                     | 在 Skylake 或 Apple 固件上强制完整模式设置                          |
+| `igfxfcmsfbs=`          | 为 IGPU 添加 `complete-modeset-framebuffers` 属性         | 指定需强制完整模式设置的连接器索引（格式示例：`0x010203` 表示索引 1、2、3，`-1` 禁用） |
+| `igfxframe=frame`       | 为 IGPU 注入 `AAPL,ig-platform-id` 或 `AAPL,snb-platform-id` 属性 | 强制注入特定帧缓冲区标识（仅测试用途）                               |
+| `igfxfw=2`              | 为 IGPU 添加 `igfxfw` 属性                               | 强制加载 Apple GuC 固件                                              |
+| `igfxgl=1`              | 为 IGPU 添加 `disable-metal` 属性                        | 禁用 Intel 的 Metal 支持                                             |
+| `igfxmetal=1`           | 为 IGPU 添加 `enable-metal` 属性                         | 强制启用 Intel 的 Metal 支持（仅离线渲染）                           |
+| `igfxonln=1`            | 为 IGPU 添加 `force-online` 属性                         | 强制所有显示器显示为在线状态                                         |
+| `igfxonlnfbs=MASK`      | 为 IGPU 添加 `force-online-framebuffers` 属性             | 指定需强制在线状态的连接器索引（格式同 `igfxfcmsfbs`）               |
+| `igfxpavp=1`            | 为 IGPU 添加 `igfxpavp` 属性                             | 强制启用 PAVP 输出                                                  |
+| `igfxrpsc=1`            | 为 IGPU 添加 `rps-control` 属性                          | 启用 RPS 控制补丁（提升 IGPU 性能）                                 |
+| `igfxsnb=0`             | 无                                                       | 禁用针对 Sandy Bridge CPU 的 IntelAccelerator 名称修复               |
 
-| Boot argument 	  | DeviceProperties 	| Description 	|
-|---	|---	|---	  |
-| `-ngfxdbg` 		    | N/A 	| Enable NVIDIA driver error logging 	|
-| `ngfxcompat=1` 	  | `force-compat` 	| Ignore compatibility check in NVDAStartupWeb 	|
-| `ngfxgl=1` 		    | `disable-metal` 	| Disable Metal support on NVIDIA 	|
-| `ngfxsubmit=0` 	  | `disable-gfx-submit` 	| Disable interface stuttering fix on 10.13 	|
+##### 其他参数
 
-##### Intel HD Graphics
+| 启动参数       | 设备属性（DeviceProperties）     | 描述                             |
+|----------------|---------------------------------|----------------------------------|
+| `webtree=1`    | 添加 `rebuild-device-tree` 属性 | 强制在 Apple 固件上重建设备树    |
 
-| Boot argument 	  | DeviceProperties 	| Description 	|
-|---	|---	|---	  |
-| `-igfxblr` 		    | `enable-backlight-registers-fix` property on IGPU 	| Fix backlight registers on KBL, CFL and ICL platforms 	|
-| `-igfxbls` 		    | `enable-backlight-smoother` property on IGPU 	| Make brightness transitions smoother on IVB+ platforms. [Read the manual](./Manual/FAQ.IntelHD.en.md#customize-the-behavior-of-the-backlight-smoother-to-improve-your-experience) 	|
-| `-igfxblt` | `enable-backlight-registers-alternative-fix` property on IGPU  | An alternative to the Backlight Registers Fix and make Backlight Smoother work on KBL/CFL platforms running macOS 13.4 or later. [Read the manual](./Manual/FAQ.IntelHD.en.md#fix-the-3-minute-black-screen-issue-on-cfl-platforms-running-macos-134-or-later) |
-| `-igfxcdc` 		    | `enable-cdclk-frequency-fix` property on IGPU 	| Support all valid Core Display Clock (CDCLK) frequencies on ICL platforms. [Read the manual](./Manual/FAQ.IntelHD.en.md#support-all-possible-core-display-clock-cdclk-frequencies-on-icl-platforms) 	 |
-| `-igfxdbeo` 		  | `enable-dbuf-early-optimizer` property on IGPU 	| Fix the Display Data Buffer (DBUF) issues on ICL+ platforms. [Read the manual](./Manual/FAQ.IntelHD.en.md#fix-the-issue-that-the-builtin-display-remains-garbled-after-the-system-boots-on-icl-platforms) 	|
-| `-igfxdump` 		  | N/A 	| Dump IGPU framebuffer kext to `/var/log/AppleIntelFramebuffer_X_Y` (available in DEBUG binaries) 	|
-| `-igfxdvmt` 		  | `enable-dvmt-calc-fix` property on IGPU 	| Fix the kernel panic caused by an incorrectly calculated amount of DVMT pre-allocated memory on Intel ICL platforms 	|
-| `-igfxfbdump` 		| N/A 	| Dump native and patched framebuffer table to ioreg at `IOService:/IOResources/WhateverBlue` 	|
-| `-igfxhdmidivs` 	| `enable-hdmi-dividers-fix` property on IGPU 	| Fix the infinite loop on establishing Intel HDMI connections with a higher pixel clock rate on SKL, KBL and CFL platforms 	|
-| `-igfxi2cdbg` 	  | N/A 	| Enable verbose output in I2C-over-AUX transactions (only for debugging purposes) 	|
-| `-igfxlspcon` 	  | `enable-lspcon-support` property on IGPU 	| Enable the driver support for onboard LSPCON chips.<br> [Read the manual](./Manual/FAQ.IntelHD.en.md#lspcon-driver-support-to-enable-displayport-to-hdmi-20-output-on-igpu) 	|
-| `-igfxmlr` 		    | `enable-dpcd-max-link-rate-fix` property on IGPU 	| Apply the maximum link rate fix 	|
-| `-igfxmpc` 		    | `enable-max-pixel-clock-override` and `max-pixel-clock-frequency` properties on IGPU 	| Increase max pixel clock (as an alternative to patching `CoreDisplay.framework` 	|
-| `-igfxnohdmi` 	  | `disable-hdmi-patches` 	| Disable DP to HDMI conversion patches for digital sound 	|
-| `-igfxnotelemetryload` | `disable-telemetry-load` property on IGPU  | Disables iGPU telemetry loading that may cause a freeze during startup on certain laptops such as Chromebooks
-| `-igfxsklaskbl` 	| N/A 	| Enforce Kaby Lake (KBL) graphics kext being loaded and used on Skylake models (KBL `device-id` and `ig-platform-id` are required. Not required on macOS 13 and above) 	|
-| `-igfxtypec` 		 	| N/A 	| Force DP connectivity for Type-C platforms 	|
-| `-igfxvesa` 		  | N/A 	| Disable Intel Graphics acceleration 	|
-| `igfxagdc=0` 		  | `disable-agdc` property on IGPU 	| Disable AGDC 	|
-| `igfxfcms=1` 		  | `complete-modeset` property on IGPU 	| Force complete modeset on Skylake or Apple firmwares 	|
-| `igfxfcmsfbs=` 	  | `complete-modeset-framebuffers` property on IGPU 	| Specify indices of connectors for which complete modeset must be enforced. Each index is a byte in a 64-bit word; for example, value `0x010203` specifies connectors 1, 2, 3. If a connector is not in the list, the driver's logic is used to determine whether complete modeset is needed. Pass `-1` to disable.  	|
-| `igfxframe=frame` | `AAPL,ig-platform-id` or `AAPL,snb-platform-id` property on IGPU 	| Inject a dedicated framebuffer identifier into IGPU (only for TESTING purposes) 	|
-| `igfxfw=2` 		    | `igfxfw` property on IGPU 	| Force loading of Apple GuC firmware 	|
-| `igfxgl=1` 		    | `disable-metal` 	| Disable Metal support on Intel 	|
-| `igfxmetal=1` 	  | `enable-metal` 	| Force enable Metal support on Intel for offline rendering 	|
-| `igfxonln=1` 		  | `force-online` property on IGPU 	| Force online status on all displays 	|
-| `igfxonlnfbs=MASK`| `force-online-framebuffers` property on IGPU 	| Specify indices of connectors for which online status is enforced. Format is similar to `igfxfcmsfbs` 	|
-| `igfxpavp=1` 		  | `igfxpavp` property on IGPU 	| Force enable PAVP output 	|
-| `igfxrpsc=1` 		 	| `rps-control` property on IGPU 	| Enable RPS control patch (improves IGPU performance) 	|
-| `igfxsnb=0` 		  | N/A 	| Disable IntelAccelerator name fix for Sandy Bridge CPUs 	|
+#### 致谢
 
-##### Backlight
-
-| Boot argument 	| DeviceProperties 	| Description 	|
-|---	|---	|---	|
-| `applbkl=3` 		| `applbkl` property 	| Enable PWM backlight control of AMD Radeon RX 5000 series graphic cards [read here.](./Manual/FAQ.Radeon.en.md) 	|
-| `applbkl=0` 		| `applbkl` property on IGPU 	| Disable AppleBacklight.kext patches for IGPU. <br>In case of custom AppleBacklight profile [read here](./Manual/FAQ.OldPlugins.en.md) 	|
-
-##### 2nd Boot stage
-
-| Boot argument 	| DeviceProperties 	| Description 	|
-|---	|---	|---	|
-| `gfxrst=1` 		  | N/A 	| Prefer drawing Apple logo at 2nd boot stage instead of framebuffer copying 	|
-| `gfxrst=4` 		  | N/A 	| Disable framebuffer init interaction during 2nd boot stage 	|
-
-##### Misc
-
-| Boot argument 	| DeviceProperties 	| Description 	|
-|---	|---	|---	|
-| `webtree=1` 		| `rebuild-device-tree` property 	| Force device renaming on Apple FW 	|
-
-#### Credits
-
-- [Apple](https://www.apple.com) for macOS
-- [AMD](https://www.amd.com) for ATOM VBIOS parsing code
-- [The PCI ID Repository](http://pci-ids.ucw.cz) for multiple GPU model names
-- [Andrey1970AppleLife](https://github.com/Andrey1970AppleLife) for [FAQs](./Manual/)
-- [FireWolf](https://github.com/0xFireWolf/) for the DPCD maximum link rate fix, infinite loop fix for Intel HDMI connections, LSPCON driver support, Core Display Clock frequency fix for ICL platforms, DVMT pre-allocated memory calculation fix for ICL platforms, Backlight Smoother for IVB+ platforms, Display Data Buffer fix for ICL platforms, and Backlight Registers Alternative Fix.
-- [Floris497](https://github.com/Floris497) for the CoreDisplay [patches](https://github.com/Floris497/mac-pixel-clock-patch-v2)
-- [Fraxul](https://github.com/Fraxul) for original CFL backlight patch
-- [headkaze](https://github.com/headkaze) for Intel framebuffer patching code and CFL backlight patch improvements
-- [hieplpvip](https://github.com/hieplpvip) for initial AppleBacklight patching plugin
-- [igork](https://applelife.ru/members/igork.564/) for power-gating patch discovery and various FP research
-- [lvs1974](https://applelife.ru/members/lvs1974.53809) for continuous implementation of Intel and NVIDIA fixing code
-- [mologie](https://github.com/mologie/NVWebDriverLibValFix) for creating NVWebDriverLibValFix.kext which forces macOS to recognize NVIDIA's web drivers as platform binaries
-- [PMheart](https://github.com/PMheart) for CoreDisplay patching code and Intel fix backporting
-- [RehabMan](https://github.com/RehabMan) for various enhancements
-- [RemB](https://applelife.ru/members/remb.8064/) for continuing sleep-wake research and finding the right register for AMD issues
-- [Vandroiy](https://applelife.ru/members/vandroiy.83653/) for maintaining the GPU model detection database
-- [YungRaj](https://github.com/YungRaj) and [syscl](https://github.com/syscl) for Intel fix backporting
-- [vit9696](https://github.com/vit9696) for writing the software and maintaining it
+- [Apple](https://www.apple.com) 提供 macOS
+- [AMD](https://www.amd.com) 提供 ATOM VBIOS 解析代码
+- [The PCI ID Repository](http://pci-ids.ucw.cz) 提供多款 GPU 型号名称
+- [Andrey1970AppleLife](https://github.com/Andrey1970AppleLife) 编写[常见问题解答](./Manual/)
+- [FireWolf](https://github.com/0xFireWolf/) 贡献了 DPCD 最大链路速率修复、Intel HDMI 无限循环修复、LSPCON 驱动支持、ICL 平台 CDCLK 频率修复、ICL 平台 DVMT 内存计算修复、IVB+ 平台背光平滑调节、ICL 平台 DBUF 修复及背光寄存器替代修复
+- [Floris497](https://github.com/Floris497) 提供 CoreDisplay [补丁](https://github.com/Floris497/mac-pixel-clock-patch-v2)
+- [Fraxul](https://github.com/Fraxul) 提供原始 CFL 背光补丁
+- [headkaze](https://github.com/headkaze) 提供 Intel 帧缓冲区补丁代码及 CFL 背光补丁改进
+- [hieplpvip](https://github.com/hieplpvip) 开发初始 AppleBacklight 补丁插件
+- [igork](https://applelife.ru/members/igork.564/) 发现电源门控补丁及多项 FP 研究
+- [lvs1974](https://applelife.ru/members/lvs1974.53809) 持续贡献 Intel 和 NVIDIA 修复代码
+- [mologie](https://github.com/mologie/NVWebDriverLibValFix) 开发 NVWebDriverLibValFix.kext，强制 macOS 识别 NVIDIA 网页驱动为平台二进制文件
+- [PMheart](https://github.com/PMheart) 提供 CoreDisplay 补丁代码及 Intel 修复回传
+- [RehabMan](https://github.com/RehabMan) 提供多项改进
+- [RemB](https://applelife.ru/members/remb.8064/) 持续研究睡眠唤醒问题并发现 AMD 相关寄存器
+- [Vandroiy](https://applelife.ru/members/vandroiy.83653/) 维护 GPU 型号检测数据库
+- [YungRaj](https://github.com/YungRaj) 和 [syscl](https://github.com/syscl) 回传 Intel 修复
+- [vit9696](https://github.com/vit9696) 编写并维护本项目
