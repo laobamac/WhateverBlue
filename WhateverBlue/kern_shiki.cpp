@@ -183,41 +183,6 @@ void SHIKI::processKernel(KernelPatcher &patcher, DeviceInfo *info) {
 		}
 	}
 
-	if (autodetectGFX) {
-		bool hasExternalNVIDIA = false;
-		bool hasExternalAMD = false;
-
-		for (size_t i = 0; i < info->videoExternal.size(); i++) {
-			auto &extGpu = info->videoExternal[i];
-			if (extGpu.vendor == WIOKit::VendorID::NVIDIA)
-				hasExternalNVIDIA = true;
-			else if (extGpu.vendor == WIOKit::VendorID::ATIAMD)
-				hasExternalAMD = true;
-		}
-
-		bool disableWhitelist = cpuGeneration != CPUInfo::CpuGeneration::SandyBridge;
-		bool disableCompatRenderer = true;
-		if (hasExternalNVIDIA && (cpuGeneration == CPUInfo::CpuGeneration::SandyBridge ||
-								  cpuGeneration == CPUInfo::CpuGeneration::Broadwell ||
-								  cpuGeneration == CPUInfo::CpuGeneration::Skylake ||
-								  cpuGeneration == CPUInfo::CpuGeneration::KabyLake)) {
-			disableCompatRenderer = false;
-			disableWhitelist = false;
-		} else if (hasExternalAMD && cpuGeneration == CPUInfo::CpuGeneration::IvyBridge) {
-			disableCompatRenderer = false;
-			disableWhitelist = false;
-		}
-
-		if (disableCompatRenderer)
-			disableSection(SectionCOMPATRENDERER);
-
-		if (disableWhitelist)
-			disableSection(SectionWHITELIST);
-
-		DBGLOG("shiki", "autodetedect decision: whitelist %d compat %d for cpu %d nvidia %d amd %d",
-			   !disableWhitelist, !disableCompatRenderer, cpuGeneration, hasExternalNVIDIA, hasExternalAMD);
-	}
-
 	if (customBoardID[0] || useHwDrmDecoder) {
 		auto entry = IORegistryEntry::fromPath("/", gIODTPlane);
 		if (entry) {

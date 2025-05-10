@@ -61,15 +61,6 @@ Read [FAQs](./Manual/) and avoid asking any questions. No support is provided fo
 | `-webnoigpu` 		| `disable-gpu` property to IGPU 	| Disable internal GPU 	|
 | `-webswitchgpu` | `switch-to-external-gpu` property to IGPU 	| Disable internal GPU when external GPU is installed 	|
 
-##### AMD Radeon
-
-| Boot argument 	| DeviceProperties 	| Description 	|
-|---	|---	|---	|
-| `-rad24` 			  | N/A 	| Enforce 24-bit display mode 	|
-| `-radcodec` 		| N/A 	| Force the spoofed PID to be used in AMDRadeonVADriver 	|
-| `-raddvi` 		  | N/A 	| Enable DVI transmitter correction (required for 290X, 370, etc.) 	|
-| `-radvesa` 		  | N/A 	| Disable ATI/AMD video acceleration completely 	|
-| `radpg=15` 		  | N/A 	| Disable several power-gating modes (see [FAQ Radeon](./Manual/FAQ.Radeon.en.md), required for Cape Verde GPUs: Radeon HD 7730/7750/7770/R7 250/R7 250X) 	|
 
 ##### Board-id
 

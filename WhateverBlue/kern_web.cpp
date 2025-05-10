@@ -226,10 +226,6 @@ void WEB::processKernel(KernelPatcher &patcher) {
 				auto &v = devInfo->videoExternal[i];
 				processExternalProperties(v.video, devInfo, v.vendor);
 
-				// Assume that AMD GPU is the boot display.
-				if (v.vendor == WIOKit::VendorID::ATIAMD && resetFramebuffer == FB_DETECT)
-					resetFramebuffer = FB_ZEROFILL;
-
 				if (appleBacklightPatch == APPLBKL_DETECT)
 					WIOKit::getOSDataValue(v.video, "applbkl", appleBacklightPatch);
 
@@ -480,38 +476,6 @@ void WEB::processExternalProperties(IORegistryEntry *device, DeviceInfo *info, u
 		char name[16];
 		snprintf(name, sizeof(name), "Slot-%u", currentExternalSlotIndex++);
 		device->setProperty("AAPL,slot-name", name, sizeof("Slot-1"));
-	}
-
-	// Set the autodetected AMD GPU name here, it will later be handled by RAD to not get overridden.
-	// This is not necessary for NVIDIA, as their drivers properly detect the name.
-	if (vendor == WIOKit::VendorID::ATIAMD && !device->getProperty("model")) {
-		uint32_t dev, rev, subven, sub;
-		if (WIOKit::getOSDataValue(device, "device-id", dev) &&
-			WIOKit::getOSDataValue(device, "revision-id", rev) &&
-			WIOKit::getOSDataValue(device, "subsystem-vendor-id", subven) &&
-			WIOKit::getOSDataValue(device, "subsystem-id", sub)) {
-			auto model = getRadeonModel(dev, rev, subven, sub);
-			if (model) {
-				device->setProperty("model", const_cast<char *>(model), static_cast<unsigned>(strlen(model)+1));
-			}
-		}
-	}
-
-	if (vendor == WIOKit::VendorID::ATIAMD && device->getProperty("no-gfx-spoof") == nullptr) {
-		WIOKit::awaitPublishing(device);
-		uint32_t realDevice = WIOKit::readPCIConfigValue(device, WIOKit::kIOPCIConfigDeviceID);
-		uint32_t acpiDevice = 0;
-		if (WIOKit::getOSDataValue(device, "device-id", acpiDevice)) {
-			DBGLOG("web", "found AMD GPU with device-id 0x%04X actual 0x%04X", acpiDevice, realDevice);
-			if (acpiDevice != realDevice) {
-				hasGfxSpoof = true;
-				KernelPatcher::routeVirtual(device, WIOKit::PCIConfigOffset::ConfigRead16, wrapConfigRead16, &orgConfigRead16);
-				KernelPatcher::routeVirtual(device, WIOKit::PCIConfigOffset::ConfigRead32, wrapConfigRead32, &orgConfigRead32);
-			}
-		} else {
-			DBGLOG("web", "missing AMD GPU device-id");
-		}
-		DBGLOG("web", "hooked configRead read methods!");
 	}
 
 	// Ensure built-in.
