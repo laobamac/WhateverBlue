@@ -1,7 +1,7 @@
 #### 常见问题:
 - _Shiki 在哪里？_
 
-Shiki 现已成为 [WhateverGreen](https://github.com/acidanthera/WhateverGreen) 的一部分。
+Shiki 现已成为 [WhateverBlue](https://github.com/acidanthera/WhateverBlue) 的一部分。
 
 - _我需要 Shiki 吗?_  
 如果您有一台 Ivy Bridge 或者更新的平台机器，并且无法使用 iTunes DRM 播放但您的显卡可以在 HDCP 模式下工作的话，您可以尝试使用 Shiki 。
@@ -32,17 +32,17 @@ Shiki 现已成为 [WhateverGreen](https://github.com/acidanthera/WhateverGreen)
 不，不需要。
 
 - _在测试 Shiki 之前，如何确定系统已正确配置?_
-您可以查阅[配置列表](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/FAQ.Shiki.zh_CN.md#配置列表)，这里面列出了所有的配置要求。
+您可以查阅[配置列表](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/FAQ.Shiki.zh_CN.md#配置列表)，这里面列出了所有的配置要求。
 
 - _在使用 Shiki 之前，为什么应该正确配置 VDA ?_  
 理论上来说这可能不必要，不过这会带来未知的结果。
 
 - _哪些显卡可能会引发卡顿?_
-   - 使用 Azul 驱动的显卡 (如 HD 4400, HD 4600) 在没有独立显卡并在使用完整接口的 ig-platform-id 时可能因为不工作的 HDCP 而无法播放高清视频，但这不是 Shiki 导致的，您需要 [WhateverGreen](https://github.com/acidanthera/WhateverGreen) 来解决这个问题。
+   - 使用 Azul 驱动的显卡 (如 HD 4400, HD 4600) 在没有独立显卡并在使用完整接口的 ig-platform-id 时可能因为不工作的 HDCP 而无法播放高清视频，但这不是 Shiki 导致的，您需要 [WhateverBlue](https://github.com/acidanthera/WhateverBlue) 来解决这个问题。
 
 - _我的机器会被禁止吗?_  
 如果您可以播放一个电影的预告片，但购买后的电影无法播放，即使已经对此电脑进行了授权，那么您的 NIC MAC 可能已被禁止。有时可以通过注销账户，并稍等片刻来重新授权来解决，但如果这无效的话，您可能需要修改以太网 MAC 地址。
-查阅[系统配置常见问题](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/FAQ.Shiki.zh_CN.md#系统配置常见问题)以获取 libHookMac 的详细用法，如果它可以工作的话，尝试修改您的以太网卡 MAC 地址。(或使用其他方式修改亦可)
+查阅[系统配置常见问题](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/FAQ.Shiki.zh_CN.md#系统配置常见问题)以获取 libHookMac 的详细用法，如果它可以工作的话，尝试修改您的以太网卡 MAC 地址。(或使用其他方式修改亦可)
 
 - _Shiki 开源吗?_  
 从 2.0.0 版本起开源。
@@ -56,7 +56,7 @@ Shiki 现已成为 [WhateverGreen](https://github.com/acidanthera/WhateverGreen)
 
 - _为什么 DRM 播放一段时间后开始出现一些错乱?_  
 从测试中来看这似乎是 Apple DRM 解码器的问题，并且在某些白苹果上也存在。
-基本上这样的问题不会出现，除了在某些 1080p 高比特率的视频上，如遇到这样的问题，请尝试重新启动电脑，重设 DRM 配置(查阅[系统配置常见问题](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/FAQ.Shiki.zh_CN.md#系统配置常见问题))，检查电源管理是否正常工作。
+基本上这样的问题不会出现，除了在某些 1080p 高比特率的视频上，如遇到这样的问题，请尝试重新启动电脑，重设 DRM 配置(查阅[系统配置常见问题](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/FAQ.Shiki.zh_CN.md#系统配置常见问题))，检查电源管理是否正常工作。
 
 - _可以用 Shiki 播放 HTML5 Netfilx 视频吗?_  
 不，Netflix 限制了 1080p 的某些视频，只有极少数的机型才可以播放。
@@ -110,7 +110,7 @@ Shiki 现已成为 [WhateverGreen](https://github.com/acidanthera/WhateverGreen)
 如果以上命令输出了内容，尝试恢复原版的 AppleGVA.framework ，并正确设置权限。
 重新启动两次。
 
-- _如何通过 [HookMac](https://github.com/acidanthera/WhateverGreen/tree/master/Tools/HookMac) 修改 NIC MAC 地址?_  
+- _如何通过 [HookMac](https://github.com/acidanthera/WhateverBlue/tree/master/Tools/HookMac) 修改 NIC MAC 地址?_  
    - 禁用 SIP (System Integrity Protection);  
    - 终端 中执行以下命令 (请自行替换 libHookMac.dylib 的完整路径以及新的 MAC 地址):   
     `DYLD_INSERT_LIBRARIES=/full/path/to/libHookMac.dylib MAC=00:11:22:33:44:55 /Applications/iTunes.app/Contents/MacOS/iTunes`;
@@ -145,9 +145,9 @@ IOVARendererID    → `<08 00 04 01>`
 IOVARendererSubID → `<03 00 00 00>`  
 VP3 需要一个不同的 IOVARendererID → `<04 00 04 01>`.  
 感谢 igork 的发现。
-或者，亦可使用 [WhateverGreen](https://github.com/acidanthera/WhateverGreen) (需使用 1.2.0 或更高版本) 来自动设定这些值。  
+或者，亦可使用 [WhateverBlue](https://github.com/acidanthera/WhateverBlue) (需使用 1.2.0 或更高版本) 来自动设定这些值。  
 
-- _有关「不受原生支持」的配置的相关情况 (NVIDIA + SNB/SKL/KBL 和 AMD + IVY)_: [WhateverGreen](https://github.com/acidanthera/WhateverGreen) 有助于改善在某些应用程序下的情况，macOS 10.13.4 起此问题已解决。
+- _有关「不受原生支持」的配置的相关情况 (NVIDIA + SNB/SKL/KBL 和 AMD + IVY)_: [WhateverBlue](https://github.com/acidanthera/WhateverBlue) 有助于改善在某些应用程序下的情况，macOS 10.13.4 起此问题已解决。
 
 - _如果 AMD 显卡无法使用 VDA 解码器_  
 使用 Intel 核芯显卡作为主显卡，并注入一个所有 connectors 都可用的 ig-platform-id (如 HD 4000 使用 `<03 00 66 01>`；HD 4600 使用 `<03 00 22 0D>`)，这似乎改善了某些 AMD 显卡的情况。(如 HD 7750)
@@ -155,13 +155,13 @@ VP3 需要一个不同的 IOVARendererID → `<04 00 04 01>`.
 - _如果启用 ATI 解码器后，AMD 显卡已成功启用硬件加速解码，但 DRM 解码仍不工作_  
 某些 AMD 显卡如 HD 7750，支持硬件加速解码，但无法解码 DRM 视频。原因不明，请正常使用 Shiki 。
 
-- _[BoardHash](https://github.com/acidanthera/WhateverGreen/tree/master/Tools/BoardHash) 是做什么的?_  
+- _[BoardHash](https://github.com/acidanthera/WhateverBlue/tree/master/Tools/BoardHash) 是做什么的?_  
 BoardHash 可以用来生成 board-id 的哈希值，类似于 CoreAUC.framework 中的 `_PsZXJ2EK7ifxrtgc` 函数。
 比如， Mac-F221BEC8 (MacPro5,1) 对应 5f571162ce99350785007863627a096bfa11c81b.  
 目前已知 MacPro5,1 可以无视解码器状态而直接允许 HD 4000 播放高清视频。
 
 - _如何为 HD 4400, HD 4600 以及 HD 530 禁用 PAVP/HDCP ?_  
-考虑使用 [WhateverGreen](https://github.com/acidanthera/WhateverGreen) 以禁用 PAVP/HDCP 来避免冻屏。
+考虑使用 [WhateverBlue](https://github.com/acidanthera/WhateverBlue) 以禁用 PAVP/HDCP 来避免冻屏。
 
 #### 配置列表
 

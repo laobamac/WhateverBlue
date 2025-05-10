@@ -1,4 +1,4 @@
- WhateverGreen Changelog
+ WhateverBlue Changelog
 =======================
 #### v1.6.9
 - Added Alder Lake/Raptor Lake/Arrow Lake CPU detection
@@ -79,7 +79,7 @@
 #### v1.4.9
 - Added per-GPU disabling API: inject `disable-gpu` to disable
 - Added per-GPU disabling kernel version specification: inject `disable-gpu-min` / `disable-gpu-max` to select kernel version to disable (inclusive range)
-- Added IGPU disabling API: inject `disable-gpu` to disable or use `-wegnoigpu` boot argument
+- Added IGPU disabling API: inject `disable-gpu` to disable or use `-webnoigpu` boot argument
 - Optimised Rocket Lake startup as IGPU is unsupported
 
 #### v1.4.8
@@ -110,7 +110,7 @@
 - Fixed loading on macOS 10.11 and earlier
 
 #### v1.4.2
-- Fixed `disable-external-gpu` (`-wegnoegpu`) on some systems
+- Fixed `disable-external-gpu` (`-webnoegpu`) on some systems
 - Disabled RPS control patch by default due to a bug in 10.15.6 IGPU drivers
 - Replaced `igfxnorpsc=1` with `igfxrpsc=1` to opt-in RPS control patch
 - Support all valid Core Display Clock (CDCLK) frequencies to avoid the kernel panic of "Unsupported CD clock decimal frequency" on Intel ICL platforms. (by @0xFireWolf)
@@ -137,7 +137,7 @@
 - Add support to injecting `Force_Load_FalconSMUFW` from OpenCore
 - Disabled automatic enabling of GVA for Polaris on 10.13 and lower
 - Replaced -radnogva argument with radgva=0/1 to force GVA for Polaris
-- Added `wegtree=1` boot argument (`rebuild-device-tree` property) to force device renaming on Apple FW
+- Added `webtree=1` boot argument (`rebuild-device-tree` property) to force device renaming on Apple FW
 
 #### v1.3.8
 - Added `igfxfw=2` boot argument and `igfxfw` IGPU property to load Apple GuC firmware
@@ -167,7 +167,7 @@
 - Added Lilu 1.4.0 support, which is now the minimum supported version
 - Dropped legacy boot arguments (`-shikigva`, `-shikifps`)
 - Fixed handling `agdpmod` GPU property (in IGPUs and in conjunction with boot-arg)
-- Added `-wegtree` boot argument to force device renaming
+- Added `-webtree` boot argument to force device renaming
 - Fixed FairPlay DRM playback patches on 10.15
 - Added `shikigva` and `shiki-id` aliases in IORegistry
 - Added `applbkl` aliases to IORegistry (data, 32-bit)
@@ -238,7 +238,7 @@ complete-modeset-framebuffers device property)
 - Fix multiple AMD GPU support improperly handling configuration properties
 
 #### v1.2.4
-- Added platform list dumping to ioreg (at IOService:/IOResources/WhateverGreen), debug build only with -igfxfbdump
+- Added platform list dumping to ioreg (at IOService:/IOResources/WhateverBlue), debug build only with -igfxfbdump
 - Fixed 10.14.1 IGPU KBL/CFL support without external GPU
 - Fixed warning about legacy processors (e.g. Xeon)
 - Fixed the support for providing custom names on `Radeon RX` models
@@ -251,10 +251,10 @@ complete-modeset-framebuffers device property)
 
 #### v1.2.2
 - Added `framebuffer-conX-alldata` IGPU patch support
-- Fixed automatic frame selection with `-wegnoegpu` boot-arg or `disable-external-gpu` IGPU property (Lilu 1.2.7 or newer)
+- Fixed automatic frame selection with `-webnoegpu` boot-arg or `disable-external-gpu` IGPU property (Lilu 1.2.7 or newer)
 
 #### v1.2.1
-- Added `-wegnoegpu` boot-arg and `disable-external-gpu` IGPU property to kill external GPU
+- Added `-webnoegpu` boot-arg and `disable-external-gpu` IGPU property to kill external GPU
 - Fixed IGPU framebuffer patches (requires Lilu 1.2.6)
 - Fixed `-shikioff` not working (note, `-liluuseroff` may be more handy)
 - Fixed loading on 10.8 and 10.9

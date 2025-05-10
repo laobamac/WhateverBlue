@@ -13,7 +13,7 @@ The general concept of enabling Intel graphics cards:
 3. Specify the correct framebuffer (`AAPL,ig-platform-id` or `AAPL,snb-platform-id`) describing available outputs and other properties of the video card.  
 4. Add some other additional properties to devices related to Intel® HD Graphics аnd for digital audio.  
   
-At this point, paragraphs 1 and 4 are automated by [WhateverGreen](https://github.com/acidanthera/WhateverGreen) and [AppleALC](https://github.com/acidanthera/AppleALC). It works in OS X 10.6 and later, and greatly simplifies graphics enabling in macOS.  
+At this point, paragraphs 1 and 4 are automated by [WhateverBlue](https://github.com/acidanthera/WhateverBlue) and [AppleALC](https://github.com/acidanthera/AppleALC). It works in OS X 10.6 and later, and greatly simplifies graphics enabling in macOS.  
   
 ## General recommendations  
 
@@ -21,7 +21,7 @@ At this point, paragraphs 1 and 4 are automated by [WhateverGreen](https://githu
 For the total amount of memory DVMT (DVMT Total) select: MAX.  
 ![Bios](./Img/bios.png)  
 Some faulty BIOSes show a higher value, but actually allocate less. In such cases select a value a step higher. This is common with Dell laptops, their BIOS reports 64MB, but actually allocates 32MB and there is no way to change it. Such case will be shown in this manual.
-2. Add [Lilu.kext](https://github.com/vit9696/Lilu/releases) and [WhateverGreen.kext](https://github.com/acidanthera/WhateverGreen/releases)(hereinafter referred to as the **WEG**) to bootloader Clover or OpenCore.
+2. Add [Lilu.kext](https://github.com/vit9696/Lilu/releases) and [WhateverBlue.kext](https://github.com/acidanthera/WhateverBlue/releases)(hereinafter referred to as the **WEB**) to bootloader Clover or OpenCore.
 3. Remove (if used previously) these kexts:  
 — IntelGraphicsFixup.kext  
 — NvidiaGraphicsFixup.kext  
@@ -740,7 +740,7 @@ Mobile: 1, PipeCount: 3, PortCount: 1, FBMemoryCount: 1
   - `0x04120004` (default)
   
 For desktop HD4400 and mobile HD4200/HD4400/HD4600 need fake the `device-id` `12040000` for `IGPU`.  
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/hsw_igpu.png)  
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/hsw_igpu.png)  
 
 
 ## Intel HD Graphics 5300-6300 ([Broadwell](https://en.wikipedia.org/wiki/Broadwell_(microarchitecture)) processors)  
@@ -1048,9 +1048,9 @@ Mobile: 0, PipeCount: 2, PortCount: 2, FBMemoryCount: 2
 
 ***Spoof Skylake as Kaby Lake on macOS 13+***
 
-Make sure that WhateverGreen v1.6.0 or above is used. Then, it is necessary to fake `device-id` and choose an `ig-platform-id` from Kaby Lake that is closest to the Skylake model (e.g. HD 530 to HD 630). In case of incompatibility, try a different `device-id` and the corresponding `ig-platform-id`. Experiments are the best practice to figure out which ID will best fit.
+Make sure that WhateverBlue v1.6.0 or above is used. Then, it is necessary to fake `device-id` and choose an `ig-platform-id` from Kaby Lake that is closest to the Skylake model (e.g. HD 530 to HD 630). In case of incompatibility, try a different `device-id` and the corresponding `ig-platform-id`. Experiments are the best practice to figure out which ID will best fit.
 
-In addition to using the latest version of WhateverGreen, `AAPL,GfxYTile` with value `01000000` may be injected together with `ig-platform-id` to avoid glitches. For more details, please refer to [acidanthera/bugtracker#483](https://github.com/acidanthera/bugtracker/issues/2088#issuecomment-1381357651).
+In addition to using the latest version of WhateverBlue, `AAPL,GfxYTile` with value `01000000` may be injected together with `ig-platform-id` to avoid glitches. For more details, please refer to [acidanthera/bugtracker#483](https://github.com/acidanthera/bugtracker/issues/2088#issuecomment-1381357651).
 
 ***SKL framebuffer list:***
 
@@ -2281,23 +2281,23 @@ Table SSDT-PNLFCFL is deprecated, use updated table [SSDT-PNLF](https://github.c
   
 Certain mobile Kaby Lake, Coffee Lake and Ice Lake devices need fixing of the backlight registers. 
 Without the fix certain devices will end in a black screen when booting macOS, like seen on the Dell inspiron 3593. 
-The WhateverGreen backlight registers fix can be enabled using `enable-backlight-registers-fix` property to `IGPU` or using the `-igfxblr` boot argument.  
+The WhateverBlue backlight registers fix can be enabled using `enable-backlight-registers-fix` property to `IGPU` or using the `-igfxblr` boot argument.  
   
 For laptop brightness keys use [BrightnessKeys.kext](https://github.com/acidanthera/BrightnessKeys).  
   
 ## Digital Audio (HDMI / DVI / DP)
 
 To enable digital audio it is necessary to set the `hda-gfx` properties and patches the connectors.  
-To enable audio in general and HDMI in particular use *WEG* along with [AppleALC.kext](https://github.com/acidanthera/AppleALC). AppleALC automatically injects missing `hda-gfx` properties.  
-On 10.10.5 and above, *WEG* automatically changes the `connector-type` of DP (00040000) to HDMI (00080000), only if not used **Custom patching**. Physical connection may be of any type (HDMI, DVI, DP), but for the digital audio `connector-type` must explicitly be HDMI.
+To enable audio in general and HDMI in particular use *WEB* along with [AppleALC.kext](https://github.com/acidanthera/AppleALC). AppleALC automatically injects missing `hda-gfx` properties.  
+On 10.10.5 and above, *WEB* automatically changes the `connector-type` of DP (00040000) to HDMI (00080000), only if not used **Custom patching**. Physical connection may be of any type (HDMI, DVI, DP), but for the digital audio `connector-type` must explicitly be HDMI.
 
 ## Custom Patching
 
 In most cases, no patches are required!  
-In 10.14 for SKL and newer it is impossible to obtain information about the framebuffers and connectors directly from the kext binary - it is necessary to dump the binary from memory, so binary framebuffer patches in bootloader are impossible. It is, however, possible to make semantic (prefered) and binary patches by using *WEG*. On older OS'es and older IGPU - this works too. By default, the current framebuffer is patched.  
+In 10.14 for SKL and newer it is impossible to obtain information about the framebuffers and connectors directly from the kext binary - it is necessary to dump the binary from memory, so binary framebuffer patches in bootloader are impossible. It is, however, possible to make semantic (prefered) and binary patches by using *WEB*. On older OS'es and older IGPU - this works too. By default, the current framebuffer is patched.  
 Patches are placed in the `Properties` section of IGPU.  
 
-Example of a binary patch using WEG.  
+Example of a binary patch using WEB.  
 ![bin](./Img/bin.png)  
   
 Example of a semantic patch: HDMI type connector (connector-type=00080000 for connectors with index 1, 2 and 3).  
@@ -2308,7 +2308,7 @@ Example of a semantic patch for bios with DVMT Pre-Alloc 32MB when higher is req
   
 [This series of patches](./AzulPatcher4600_equivalent.plist) are the full equivalent of AzulPatcher4600.kext, for those who have previously used it. (on [some](https://github.com/coderobe/AzulPatcher4600#tested-on) Haswell laptops with framebuffer `0x0A260006` helps to get rid of the artifacts).  
   
-**All possible WEG custom patches :**  
+**All possible WEB custom patches :**  
 
 ***Semantic:***  
 *framebuffer-patch-enable (enabling the semantic patches in principle)  
@@ -2347,10 +2347,10 @@ N stands for the number of the patch: 0, 1, 2, ... 9*
 Detailed information about framebuffers and connectors can be extracted with [010 Editor](http://www.sweetscape.com/010editor/) and the [IntelFramebuffer.bt](./IntelFramebuffer.bt) script.  
 This information is useful for those who make custom patches.  
 ![ifbt](./Img/ifbt.png)  
-In 10.14 for SKL and newer to get a dump suitable for the script you can use the debug version of *WEG* with the  
+In 10.14 for SKL and newer to get a dump suitable for the script you can use the debug version of *WEB* with the  
 `-igfxdump` boot-argument. The dump will be saved to /var/log/  
-The original and patched dumps can be obtained with IOReg when using a debug version of *WEG* and booting with the  
-`-igfxfbdump` boot-argument from `IOService:/IOResources/WhateverGreen` (dumps from IOReg is simplified, don't use for bt script).
+The original and patched dumps can be obtained with IOReg when using a debug version of *WEB* and booting with the  
+`-igfxfbdump` boot-argument from `IOService:/IOResources/WhateverBlue` (dumps from IOReg is simplified, don't use for bt script).
 
 ## VGA Support
 
@@ -2393,7 +2393,7 @@ To use this patch, add the `enable-hdmi20` property to `IGPU` or use the `-cdfon
 
 Add the `disable-external-gpu` property to `IGPU`.  
 ![dGPU_off](./Img/dGPU_off.png)  
-Or instead of this property, use the boot-arg `-wegnoegpu`
+Or instead of this property, use the boot-arg `-webnoegpu`
   
 ## Fix the invalid maximum link rate issue on some laptops (Dell XPS 15 9570, etc.)
 
@@ -2451,7 +2451,7 @@ Recent laptops (KBL/CFL) are typically equipped with a HDMI 2.0 port. This port 
   
 LSPCON works in either Level Shifter (LS) or Protocol Converter (PCON) mode. When the adapter works in LS mode, it is capable of producing HDMI 1.4 signals from DisplayPort, while in PCON mode, it could provide HDMI 2.0 output. Some onboard LSPCON adapters (e.g. the one on Dell XPS 15 9570) have been configured in the firmware to work in LS mode by default, resulting a black screen on handling HDMI 2.0 connections.  
   
-Starting from version 1.3.0, *WEG* now provides driver support for the onboard LSPCON by automatically configuring the adapter to run in PCON mode on new HDMI connections, and hence solves the black screen issue on some platforms.  
+Starting from version 1.3.0, *WEB* now provides driver support for the onboard LSPCON by automatically configuring the adapter to run in PCON mode on new HDMI connections, and hence solves the black screen issue on some platforms.  
   
 - LSPCON driver is only applicable for laptops and PCs with HDMI 2.0 routed to IGPU.
 - LSPCON driver is necessary for all newer platforms unless the new IGPU starts to provide native HDMI 2.0 output.
@@ -2673,7 +2673,7 @@ igfx: @ (DBG) BLS: [COMM] Processing the request: Current = 0x00014ead; Target =
 
 ## Fix the 3-minute black screen issue on KBL/CFL platforms running macOS 13.4 or later
 
-If you have a KBL/CFL-based laptop and rely on the Backlight Registers Fix (BLR) to fix the 3-minute black screen issue, you may notice that BLR (`-igfxblr`) no longer work on macOS 13.4 or later. This is because Apple has simplified the implementation of the functions, `ReadRegister32` and `WriteRegister32`, in Kaby/Coffee Lake's framebuffer drivers shipped by macOS 13.4, so the compiler chose to inline invocations of those functions as many as possible. As a result, the `WriteRegister32` hooks registered by the Backlight Registers Fix (BLR) and the Backlight Smoother (BLS) submodules no longer work. Starting from v1.6.5, WEG can revert the optimizations done by the compiler in backlight related functions, provide an alternative to BLR and make BLS work properly on macOS 13.4 or later. Starting from v1.6.6, WEG supports Kaby Lake platforms.
+If you have a KBL/CFL-based laptop and rely on the Backlight Registers Fix (BLR) to fix the 3-minute black screen issue, you may notice that BLR (`-igfxblr`) no longer work on macOS 13.4 or later. This is because Apple has simplified the implementation of the functions, `ReadRegister32` and `WriteRegister32`, in Kaby/Coffee Lake's framebuffer drivers shipped by macOS 13.4, so the compiler chose to inline invocations of those functions as many as possible. As a result, the `WriteRegister32` hooks registered by the Backlight Registers Fix (BLR) and the Backlight Smoother (BLS) submodules no longer work. Starting from v1.6.5, WEB can revert the optimizations done by the compiler in backlight related functions, provide an alternative to BLR and make BLS work properly on macOS 13.4 or later. Starting from v1.6.6, WEB supports Kaby Lake platforms.
 
 Note that this alternative fix is only available for users who have laptops using Kaby Lake's or Coffee Lake's graphics driver and running macOS 13.4 or later. You can add the property `enable-backlight-registers-alternative-fix` to `IGPU` or use the boot argument `-igfxblt` to enable this new fix and remove the boot argument `-igfxblr` and/or the device property `enable-backlight-registers-fix`. If you wish to use the Backlight Smoother on macOS 13.4 or later, you need to add both `-igfxblt` and `-igfxbls` to the boot arguments.
 
@@ -2690,7 +2690,7 @@ You may specify the delay in seconds (value of type `Data`) via the `dbuf-optimi
 If the property is not specified, the default value will be used (see below).
 
 The community reports that a delay of 1 to 3 seconds is adequate for avoiding the underrun issue on the builtin display without having negative impacts on external displays,
-and that the default delay of 0 second used in *WEG* v1.5.4 may lead to both internal and external displays flickering on some laptops.
+and that the default delay of 0 second used in *WEB* v1.5.4 may lead to both internal and external displays flickering on some laptops.
 Starting from v1.5.5, the default delay is changed to 1 second, so in most cases users do not have to specify the delay manually.
 
 <details>
@@ -2709,25 +2709,25 @@ Starting from v1.5.5, the default delay is changed to 1 second, so in most cases
 
 - Limited cards: HD2000, HD2500 can only be used for [IQSV](https://www.applelife.ru/threads/zavod-intel-quick-sync-video.817923/) (they are used in real Macs only for this), there are no solutions.  
 - Intel Pentium / Celeron Graphics can't be enabled, there are no solutions. In certain cases сan only be used for [IQSV](https://www.applelife.ru/threads/zavod-intel-quick-sync-video.817923/).  
-- HDMI black screen on Haswell platforms. Resolved by using *WEG* or macOS 10.13.4 and later.  
+- HDMI black screen on Haswell platforms. Resolved by using *WEB* or macOS 10.13.4 and later.  
 - Support for 2 or more displays on Intel Skylake and newer desktops is missing or buggy. In macOS 10.14.x there is an improvement tendency.  
 - Displays do not wake up on Intel Skylake desktops and later, connecting via DisplayPort or upgrading to macOS 10.14.x may help.  
   
 **Glitches and settings**
 
 - HD3000 can sometimes have interface glitches. Since the amount of video memory in Sandy depends on the overall system memory - 8 GB is the minimum to have, but there are no guaranteed solutions. It is also recommended to install [Max TOLUD to Dynamic](https://applelife.ru/posts/595326/) in the BIOS. Perhaps you can benefit from these [patches](https://www.applelife.ru/posts/730496).  
-- "8 apples" and the disappearance of the background image with File Vault 2 during the transition from UEFI GOP drivers to macOS drivers (due to incompatible EDID). Partially solved in *WEG*.  
-- PAVP freezes (freezes during video playback, broken QuickLook, etc.) are solved with *WEG* at the cost of disabling HDCP.  
+- "8 apples" and the disappearance of the background image with File Vault 2 during the transition from UEFI GOP drivers to macOS drivers (due to incompatible EDID). Partially solved in *WEB*.  
+- PAVP freezes (freezes during video playback, broken QuickLook, etc.) are solved with *WEB* at the cost of disabling HDCP.  
 - Haswell glitches for some framebuffers are resolved with a semantic `framebuffer-cursormem` patch.  
 - In macOS 10.14 оn some laptops with KBL graphics one may face visual artifacts on the gradients. In certain cases can help `AAPL,GfxYTile` with value `01000000` or for a temporary solution try to fake IGPU to use SKL drivers.  
-- The several minutes black screen upon OS boot with mobile CFL is fixed by *WEG*.  
+- The several minutes black screen upon OS boot with mobile CFL is fixed by *WEB*.  
 - The absence in BIOS of an option to change the amount of memory for the frame buffer is resolved with either semantic `framebuffer-stolenmem` and `framebuffer-fbmem` patches, by modifying the BIOS or by manually inputting the values in UEFI Shell. **Otherwise you get a panic.** [Explanation](https://www.applelife.ru/posts/750369)  
 - Some systems with IGPUs (e.g. KBL and CFL) may cause system instability in lower power states. Sometimes it can be noticed by NVMe kernel panics. The generally available workaround is passing `forceRenderStandby=0` to kernel boot arguments to disable RC6 Render Standby. See [this issue](https://github.com/acidanthera/bugtracker/issues/1193) for more details.
   
 **Performance and media content**
 
-- Compatibility with discrete cards in unsupported configurations (NVIDIA + SNB/SKL/KBL; AMD + IVY), for some applications is fixed by *WEG*. Starting with macOS 10.13.4 the problem is gone.  
-- Viewing protected iTunes content is fixed by *WEG*. Starting with macOS 10.12 on Ivy Bridge and newer viewing HD movies on iTunes is not possible without a discrete card.  
+- Compatibility with discrete cards in unsupported configurations (NVIDIA + SNB/SKL/KBL; AMD + IVY), for some applications is fixed by *WEB*. Starting with macOS 10.13.4 the problem is gone.  
+- Viewing protected iTunes content is fixed by *WEB*. Starting with macOS 10.12 on Ivy Bridge and newer viewing HD movies on iTunes is not possible without a discrete card.  
 - Apple GuC firmware doesn't work at old 22 nanometer chipsets - Z370 and older.  
   
 A [VDADecoderChecker](https://i.applelife.ru/2019/05/451893_10.12_VDADecoderChecker.zip) output for solo integrated graphics using non-empty framebuffer must look like this:  

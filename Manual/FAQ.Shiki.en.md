@@ -3,7 +3,7 @@
 _Warning: Shiki functionality is not planned to development for macOS 11+_  
   
 - _Where is Shiki?_  
-Shiki is now part of [WhateverGreen](https://github.com/acidanthera/WhateverGreen)
+Shiki is now part of [WhateverBlue](https://github.com/acidanthera/WhateverBlue)
 
 - _Do I need Shiki?_  
 If you have Intel Ivy CPU or newer, iTunes DRM playback does not work for you, and your GPU works with HDCP, you may try it.  
@@ -41,7 +41,7 @@ There is a ticklist to check against for all sorts of configurations. See config
 You may theoretically not do this but the consequences will be unspecified.
 
 - _Which GPUs this solution is known to glitch with?_
-  - Azul GPUs (e.g. HD 4400, HD 4600) when used with a connector-full platform-id without a discrete GPU fail to play HD videos due to not working HDCP playback. The issue is unrelated to Shiki, and you need [WhateverGreen](https://github.com/acidanthera/WhateverGreen) to avoid freezes.
+  - Azul GPUs (e.g. HD 4400, HD 4600) when used with a connector-full platform-id without a discrete GPU fail to play HD videos due to not working HDCP playback. The issue is unrelated to Shiki, and you need [WhateverBlue](https://github.com/acidanthera/WhateverBlue) to avoid freezes.
 
 - _Is my computer banned?_  
 If you are able to view the trailers but bought movies do not play even after computer authorisation your NIC MAC might be banned. Sometimes it is possible to log out and reauthorise your computer after a short while. Otherwise you must change your LAN MAC address.
@@ -145,9 +145,9 @@ NVIDIA drivers do not properly add these values necessary for VDA decoding for M
 IOVARendererID    → `<08 00 04 01>`  
 IOVARendererSubID → `<03 00 00 00>`  
 VP3 ones want a different IOVARendererID → `<04 00 04 01>`.  
-Thanks to igork for noticing it. You may use [WhateverGreen](https://github.com/acidanthera/WhateverGreen) Lilu plugin to do this automatically.  
+Thanks to igork for noticing it. You may use [WhateverBlue](https://github.com/acidanthera/WhateverBlue) Lilu plugin to do this automatically.  
   
-- _Compatibility with discrete cards in unsupported configurations (NVIDIA + SNB/SKL/KBL; AMD + IVY)_, for some applications is fixed by [WhateverGreen](https://github.com/acidanthera/WhateverGreen) Lilu plugin. Starting with macOS 10.13.4 the problem is gone.  
+- _Compatibility with discrete cards in unsupported configurations (NVIDIA + SNB/SKL/KBL; AMD + IVY)_, for some applications is fixed by [WhateverBlue](https://github.com/acidanthera/WhateverBlue) Lilu plugin. Starting with macOS 10.13.4 the problem is gone.  
   
 - _I cannot get VDA decoder work with my AMD GPU, what could I try?_  
 Prioritising Intel and using connector-full platform-id (e.g. `<03 00 66 01>` for HD 4000, `<03 00 22 0D>` for HD 4600) seems to help with certain AMD GPUs (e.g. HD 7750).
@@ -161,7 +161,7 @@ For example, Mac-F221BEC8 (MacPro5,1) stands for 5f571162ce99350785007863627a096
 It seems to have hashes of the macs with special HDCP permissions. E. g. it is known that MacPro5,1 model makes HD movies work on HD 4000 regardless of decoder state. 
 
 - _How can I disable PAVP/HDCP on Intel Azul (HD 4400, HD 4600) and Skylake (HD 530) GPUs?_  
-Consider using [WhateverGreen](https://github.com/acidanthera/WhateverGreen) to disable PAVP/HDCP and avoid freezes.
+Consider using [WhateverBlue](https://github.com/acidanthera/WhateverBlue) to disable PAVP/HDCP and avoid freezes.
 
 **Configuration Checklist :**
 

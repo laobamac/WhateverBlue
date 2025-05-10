@@ -17,7 +17,7 @@
 NSString *ResourceHeader {@"\
 //                                                   \n\
 //  kern_resources.cpp                               \n\
-//  WhateverGreen                                    \n\
+//  WhateverBlue                                    \n\
 //                                                   \n\
 //  Copyright © 2018 vit9696. All rights reserved.   \n\
 //                                                   \n\
@@ -30,7 +30,7 @@ NSString *ResourceHeader {@"\
 NSString *ResourcePrivHeader {@"\
 //                                                   \n\
 //  kern_resources.hpp                               \n\
-//  WhateverGreen                                    \n\
+//  WhateverBlue                                    \n\
 //                                                   \n\
 //  Copyright © 2018 vit9696. All rights reserved.   \n\
 //                                                   \n\

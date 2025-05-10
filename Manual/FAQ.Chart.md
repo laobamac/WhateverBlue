@@ -30,7 +30,7 @@ Things to keep in mind:
 
 - All kinds of software DRM decoders were removed from macOS 11+
 - All kinds of legacy hardware DRM decoders (e.g. NVIDIA VP3) were removed from macOS 11+
-- WhateverGreen Shiki functionality is not planned for inclusion for macOS 11+
+- WhateverBlue Shiki functionality is not planned for inclusion for macOS 11+
 - Only IGPU-free Mac models allow for full DRM content access given a compatible AMD GPU video decoder
 - For old CPUs (e.g. Xeons or Core 2 Quad) and supported AMD GPUs injecting `unfairgva` with `<01 00 00 00>` value is required for streaming DRM.  
   

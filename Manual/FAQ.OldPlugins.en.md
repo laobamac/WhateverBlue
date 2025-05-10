@@ -6,7 +6,7 @@ AzulPatcher4600.kext is deprecated because it is equivalent to use `framebuffer-
 For example, patch fCursorMemorySize=9MB:  
 `framebuffer-patch-enable` = `01000000`  
 `framebuffer-cursormem` = `00009000`  
-[Full equivalent AzulPatcher4600.kext](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/AzulPatcher4600_equivalent.plist)  
+[Full equivalent AzulPatcher4600.kext](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/AzulPatcher4600_equivalent.plist)  
   
 IntelGraphicsDVMTFixup.kext is deprecated because it is equivalent to use `framebuffer-patch` in `DeviceProperties`  
 `framebuffer-patch-enable` = `01000000`  

@@ -1,7 +1,7 @@
-WhateverGreen
+WhateverBlue
 =============
 
-[![Build Status](https://github.com/acidanthera/WhateverGreen/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/acidanthera/WhateverGreen/actions) [![Scan Status](https://scan.coverity.com/projects/16177/badge.svg?flat=1)](https://scan.coverity.com/projects/16177)
+[![Build Status](https://github.com/acidanthera/WhateverBlue/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/acidanthera/WhateverBlue/actions) [![Scan Status](https://scan.coverity.com/projects/16177/badge.svg?flat=1)](https://scan.coverity.com/projects/16177)
 
 [Lilu](https://github.com/acidanthera/Lilu) plugin providing patches to select GPUs on macOS. Requires Lilu 1.5.6 or newer.
 
@@ -49,17 +49,17 @@ Read [FAQs](./Manual/) and avoid asking any questions. No support is provided fo
 | Boot argument 	| DeviceProperties 	| Description 	|
 |---	|---	|---	|
 | `-cdfon` 			  | `enable-hdmi20`  | Enable HDMI 2.0 patches on iGPU and dGPU (Not implemented for macOS 11+)  |
-| `-wegbeta` 		  | N/A 	| Enable WhateverGreen on unsupported OS versions (15 and below are enabled by default) 	|
-| `-wegdbg` 		  | N/A 	| Enable debug printing (available in DEBUG binaries) 	|
-| `-wegoff` 		  | N/A 	| Disable WhateverGreen 	|
+| `-webbeta` 		  | N/A 	| Enable WhateverBlue on unsupported OS versions (15 and below are enabled by default) 	|
+| `-webdbg` 		  | N/A 	| Enable debug printing (available in DEBUG binaries) 	|
+| `-weboff` 		  | N/A 	| Disable WhateverBlue 	|
 
 ##### Switch GPU
 
 | Boot argument 	| DeviceProperties 	| Description 	|
 |---	|---	|---	|
-| `-wegnoegpu` 		| `disable-gpu` property to each GFX0 	| Disable all external GPUs 	|
-| `-wegnoigpu` 		| `disable-gpu` property to IGPU 	| Disable internal GPU 	|
-| `-wegswitchgpu` | `switch-to-external-gpu` property to IGPU 	| Disable internal GPU when external GPU is installed 	|
+| `-webnoegpu` 		| `disable-gpu` property to each GFX0 	| Disable all external GPUs 	|
+| `-webnoigpu` 		| `disable-gpu` property to IGPU 	| Disable internal GPU 	|
+| `-webswitchgpu` | `switch-to-external-gpu` property to IGPU 	| Disable internal GPU when external GPU is installed 	|
 
 ##### AMD Radeon
 
@@ -99,7 +99,7 @@ Read [FAQs](./Manual/) and avoid asking any questions. No support is provided fo
 | `-igfxdbeo` 		  | `enable-dbuf-early-optimizer` property on IGPU 	| Fix the Display Data Buffer (DBUF) issues on ICL+ platforms. [Read the manual](./Manual/FAQ.IntelHD.en.md#fix-the-issue-that-the-builtin-display-remains-garbled-after-the-system-boots-on-icl-platforms) 	|
 | `-igfxdump` 		  | N/A 	| Dump IGPU framebuffer kext to `/var/log/AppleIntelFramebuffer_X_Y` (available in DEBUG binaries) 	|
 | `-igfxdvmt` 		  | `enable-dvmt-calc-fix` property on IGPU 	| Fix the kernel panic caused by an incorrectly calculated amount of DVMT pre-allocated memory on Intel ICL platforms 	|
-| `-igfxfbdump` 		| N/A 	| Dump native and patched framebuffer table to ioreg at `IOService:/IOResources/WhateverGreen` 	|
+| `-igfxfbdump` 		| N/A 	| Dump native and patched framebuffer table to ioreg at `IOService:/IOResources/WhateverBlue` 	|
 | `-igfxhdmidivs` 	| `enable-hdmi-dividers-fix` property on IGPU 	| Fix the infinite loop on establishing Intel HDMI connections with a higher pixel clock rate on SKL, KBL and CFL platforms 	|
 | `-igfxi2cdbg` 	  | N/A 	| Enable verbose output in I2C-over-AUX transactions (only for debugging purposes) 	|
 | `-igfxlspcon` 	  | `enable-lspcon-support` property on IGPU 	| Enable the driver support for onboard LSPCON chips.<br> [Read the manual](./Manual/FAQ.IntelHD.en.md#lspcon-driver-support-to-enable-displayport-to-hdmi-20-output-on-igpu) 	|
@@ -141,7 +141,7 @@ Read [FAQs](./Manual/) and avoid asking any questions. No support is provided fo
 
 | Boot argument 	| DeviceProperties 	| Description 	|
 |---	|---	|---	|
-| `wegtree=1` 		| `rebuild-device-tree` property 	| Force device renaming on Apple FW 	|
+| `webtree=1` 		| `rebuild-device-tree` property 	| Force device renaming on Apple FW 	|
 
 #### Credits
 

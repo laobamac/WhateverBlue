@@ -1,6 +1,6 @@
 //
 //  reference.cpp
-//  WhateverGreen
+//  WhateverBlue
 //  Explanation of how RadeonFramebuffer connectors are created
 //  Reverse-engineered from AMDSupport.kext
 //

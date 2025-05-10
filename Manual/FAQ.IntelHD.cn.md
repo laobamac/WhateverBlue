@@ -16,15 +16,15 @@ macOS 对 HD 2000（Sandy Bridge 微架构）及以上提供了相对完整支�
 3. 指定正确的缓冲帧。（英文: Framebuffer, 下文简称 缓冲帧 为 FB）（即 AAPL,ig-platform-id（适用于 Ivy Bridge 或更新微架构）或 AAPL,snb-platform-id（仅适用于 Sandy Bridge 微架构）) 一组正确的 FB 应当正确地包含了可用的输出端口以及该核显的其他属性。
 4. 某些与核显相关的其他设备中已包含相关属性。
 
-其中，第 1 步和第 4 步由 WhateverGreen 自动完成。其可运行在 macOS 10.8 及更高版本，这大大简化了正确启用核显的步骤。
+其中，第 1 步和第 4 步由 WhateverBlue 自动完成。其可运行在 macOS 10.8 及更高版本，这大大简化了正确启用核显的步骤。
 
 ## 建议
 1. 在 BIOS 中设置核显所需的内存量（即 预分配 DVMT，英文: DVMT Pre-Allocated）为 32 MB, 64 MB, 96 MB 等，与使用的 FB 值相关。如要使用最大值（英文: DVMT Total），请设为 MAX。
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/bios.png) 
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/bios.png) 
 
 一些有缺陷的 BIOS 可能会有显示值与实际值不符的现象，并且实际值通常小于显示值，此时则需要设定一个更高的显示值。此现象在 戴尔 笔记本中比较常见，显示值为 64 MB，实际却只分配了 32 MB，且无法更改。后续会展示此现象。
 
-2. 将 [Lilu.kext](https://github.com/vit9696/Lilu/releases) 和 [WhateverGreen.kext](https://github.com/acidanthera/WhateverGreen/releases)（下文简称为 WEG）添加到 Clover 的 `kexts/Other` 文件夹中。
+2. 将 [Lilu.kext](https://github.com/vit9696/Lilu/releases) 和 [WhateverBlue.kext](https://github.com/acidanthera/WhateverBlue/releases)（下文简称为 WEB）添加到 Clover 的 `kexts/Other` 文件夹中。
 
 3. 移除下列驱动（如果曾经在使用）
 - IntelGraphicsFixup
@@ -39,7 +39,7 @@ macOS 对 HD 2000（Sandy Bridge 微架构）及以上提供了相对完整支�
 - FakePCIID.kext（不使用其他基于 FakePCIID 的插件时）
 
 4. 关闭以下所有 Clover 的显卡参数注入（注意是 *关闭*，不是注释掉）
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/Clover1.png)
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/Clover1.png)
 
 5. 关闭 Clover 的以下 DSDT 补丁
 - `AddHDMI`
@@ -52,7 +52,7 @@ macOS 对 HD 2000（Sandy Bridge 微架构）及以上提供了相对完整支�
 6. 关闭 Clover 的 `UseIntelHDMI`
 
 7. 禁用 `Devices` - `Inject`参数（通常的 config.plist 中或许没有此参数，如有，则需关闭或删除）
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/Clover2.png)
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/Clover2.png)
 
 8. 删除 `-disablegfxfirmware` 启动参数
 
@@ -80,7 +80,7 @@ macOS 对 HD 2000（Sandy Bridge 微架构）及以上提供了相对完整支�
 
 **注意！** 如果某个属性不是必需的，请完全删除掉；如果某个 `PciRoot` 位置不存在，也请彻底删除！
 
-![](https://raw.githubusercontent.com/acidanthera/WhateverGreen/master/Manual/Img/basic.png)
+![](https://raw.githubusercontent.com/acidanthera/WhateverBlue/master/Manual/Img/basic.png)
 
 **选择一个适合的 FB。** 首先试试推荐值，如果失败，则逐个尝试其他值，除了 “空 FB”（无可用端口），详见另一个 [专题](https://www.applelife.ru/threads/zavod-intel-quick-sync-video.817923)。（译者注：原文发布于俄文社区，所以并无中文版本）在寻找合适的 FB 时，可以临时通过启动参数（英文: `boot-arg`）设置，此时 `Properties` 部分中的 FB 设置将被忽略。如: `igfxframe=0x0166000B`
 
@@ -210,19 +210,19 @@ Mac-942B59F58194171B -> SNB5 (iMac12,2) -> no ports
 
 通常 SNB 平台无需指定 FB，与 `board-id` 相对应的一组 FB 将会被自动使用。不过，在使用不基于 SNB 平台的 SMBios 时，则需指定 FB。（译者注：如使用 `HD 3000` + 基于 `Ivy Bridge` 平台的 `MacBookPro9,1` 时，则需指定 FB）
 
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/snb.png)
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/snb.png)
 
 注意！为 SNB 平台指定 FB 时，属性名应为 `AAPL,snb-platform-id`，这与其他平台不同。
 
 对于桌面版，需设定（仿冒）`device-ID` 为 `26010000`。（如下所示）
 
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/snb_igpu.png)
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/snb_igpu.png)
 
 （注：对于“空 FB”，需要设定不同的 ID，阅读 [此处](https://www.applelife.ru/threads/zavod-intel-quick-sync-video.817923) 以获取更多详情）（译者注：原文发布于俄文社区，所以并无中文版本）
 
 *注意！* 在基于 [7 系列芯片组](https://ark.intel.com/content/www/cn/zh/ark/products/series/98460/intel-7-series-chipsets.html?_ga=2.100876037.569501178.1553421075-527540512.1553334841) 的主板上使用基于 `SNB` 微架构的处理器时（译者注：如在 `Z77` 芯片组上使用基于 `SNB` 微架构的 `i7-2600` 时），需设定（仿冒）`IMEI` 的 `device-ID` 为 `3A1C000`。（如下所示）
 
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/snb_imei.png)
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/snb_imei.png)
 
 ## HD 2500/4000（[Ivy Bridge](https://zh.wikipedia.org/zh-cn/Ivy_Bridge微架構) 微架构，下文简称 Ivy）
 支持 macOS 10.8 或更新版本。
@@ -372,7 +372,7 @@ Mobile: 0, PipeCount: 2, PortCount: 3, FBMemoryCount: 2
 
 *注意！* 在基于 [6 系列芯片组](https://ark.intel.com/content/www/cn/zh/ark/products/series/98461/intel-6-series-chipsets.html?_ga=2.2193906.333725926.1553422863-527540512.1553334841) 的主板上使用基于 `Ivy` 微架构的处理器时（译者注：如在 `Z68` 芯片组上使用基于 `Ivy` 微架构的 `i7-3770` 时），需设定（仿冒）`IMEI` 的 `device-ID` 为 `3A1E0000`。（如下所示）
 
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/ivy_imei.png)  
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/ivy_imei.png)  
  
 ## Intel HD Graphics 4200-5200（[Haswell](https://zh.wikipedia.org/zh-cn/Haswell微架構) 微架构）
 支持 macOS 10.9 或更新版本。
@@ -658,7 +658,7 @@ Mobile: 1, PipeCount: 3, PortCount: 1, FBMemoryCount: 1
 
 对于 桌面版 HD 4400 以及移动版 HD4200/HD4400/HD4600 ，需设定（仿冒）`IGPU` 的 `device-id` 为 `12040000`。（如下所示）
 
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/hsw_igpu.png) 
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/hsw_igpu.png) 
 
 ## HD 5300-6300（[Broadwell](https://zh.wikipedia.org/zh-cn/Broadwell微架構) 微架构，下文简称 BDW）
 支持 macOS 10.10.2 或更新版本。
@@ -1371,7 +1371,7 @@ Mobile: 1, PipeCount: 1, PortCount: 1, FBMemoryCount: 1
 
 对于 UHD 620 ([Kaby Lake Refresh](https://en.wikipedia.org/wiki/Kaby_Lake#List_of_8th_generation_Kaby_Lake_R_processors)，译者注：该页面暂无中文版本，上次检查日期：2019/03/25)，需设定（仿冒）`IGPU` 的 `device-id` 为 `16590000`。（如下所示）
 
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/kbl-r_igpu.png)
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/kbl-r_igpu.png)
  
 
 ## UHD 610-655（[Coffee Lake](https://zh.wikipedia.org/zh-cn/Coffee_Lake微架构) 微架构，下文简称 CFL）
@@ -1576,7 +1576,7 @@ Mobile: 0, PipeCount: 0, PortCount: 0, FBMemoryCount: 0
 
 *从 macOS Mojave 10.14.4 起，无需再设定此参数！*
 
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/cfl-r_igpu.png)  
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/cfl-r_igpu.png)  
 
 <details>
 <summary>更多：CFL 平台在 macOS 10.13 的适配情况（点击此处以展开）</summary>
@@ -1595,27 +1595,27 @@ macOS High Sierra 10.13.6 的特别版本 17G2208 包含对 CFL 平台核显的�
 
 对于 UHD 630，或许直接将硬件 ID 设定（仿冒）为 HD 630 的 ID 更好一些。（如下所示）
 
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/kbl.png)
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/kbl.png)
 
 同时，请明确指定一组适配 `HD 630` 的 FB！
 </details> 
 
 ## 调节笔记本亮度
-使用此 ACPI 表 [SSDT-PNLF](https://raw.githubusercontent.com/acidanthera/WhateverGreen/master/Manual/SSDT-PNLF.dsl)
+使用此 ACPI 表 [SSDT-PNLF](https://raw.githubusercontent.com/acidanthera/WhateverBlue/master/Manual/SSDT-PNLF.dsl)
 
 ## 数字音频支持 (HDMI / DVI / DP)
 若要启用数字音频，需要设置必要的属性，通常还需要修正端口信息。
 
-音频部分，尤其是 HDMI 的音频部分，通常可共同使用 WEG 与 [AppleALC.kext](https://github.com/acidanthera/AppleALC) 以使其工作。
+音频部分，尤其是 HDMI 的音频部分，通常可共同使用 WEB 与 [AppleALC.kext](https://github.com/acidanthera/AppleALC) 以使其工作。
 
-macOS 10.10.5 或更新版本中，在不使用自定义补丁时，WEG 会自动将 `connector-type` 中的 DP (00040000) 端口修改为 HDMI (00080000) 端口。
+macOS 10.10.5 或更新版本中，在不使用自定义补丁时，WEB 会自动将 `connector-type` 中的 DP (00040000) 端口修改为 HDMI (00080000) 端口。
 
 实际端口可以是任意类型 (HDMI / DVI / DP)，不过，数字音频工作时，`connector-type` 必须是 HDMI。
 
-## 使用 WEG 自定义 FB 和 端口 补丁
+## 使用 WEB 自定义 FB 和 端口 补丁
 大多情况下，不需要额外补丁！
 
-macOS 10.14 下，对于 SKL 或更新平台，无法直接从 kext 二进制文件中取得 FB 和 端口信息：所以必须从内存中导出二进制文件，因此无法再使用 Clover 来修改 FB。不过，可以通过 WEG 制作 语义补丁（推荐）或 二进制补丁，其在较早的 macOS 版本和较早的核显设备上亦适用。默认情况下，当前使用的 FB 将会被修改。
+macOS 10.14 下，对于 SKL 或更新平台，无法直接从 kext 二进制文件中取得 FB 和 端口信息：所以必须从内存中导出二进制文件，因此无法再使用 Clover 来修改 FB。不过，可以通过 WEB 制作 语义补丁（推荐）或 二进制补丁，其在较早的 macOS 版本和较早的核显设备上亦适用。默认情况下，当前使用的 FB 将会被修改。
 
 补丁需放在 IGPU 的 `Properties` 部分。
 
@@ -1631,9 +1631,9 @@ macOS 10.14 下，对于 SKL 或更新平台，无法直接从 kext 二进制文
 
 ![](./Img/sem.png)  
 
-[此部分补丁](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/AzulPatcher4600_equivalent.plist) 完全等同于使用 AzulPatcher4600.kext，如曾在使用，请改用这些补丁。（在 [某些](https://github.com/coderobe/AzulPatcher4600#tested-onHaswell) Haswell 微架构的笔记本上，使用 `0x0A260006` 这组 FB 会改善花屏的情况）
+[此部分补丁](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/AzulPatcher4600_equivalent.plist) 完全等同于使用 AzulPatcher4600.kext，如曾在使用，请改用这些补丁。（在 [某些](https://github.com/coderobe/AzulPatcher4600#tested-onHaswell) Haswell 微架构的笔记本上，使用 `0x0A260006` 这组 FB 会改善花屏的情况）
 
-**WEG 支持的自定义补丁列表**  
+**WEB 支持的自定义补丁列表**  
 语义补丁部分：
 
 *framebuffer-patch-enable (**启用语义补丁的总开关**)*
@@ -1683,15 +1683,15 @@ framebuffer-conX-YYYYYYYY-alldata (**在当前 FB 与 YYYYYY 匹配时完全替�
 
 *N 为补丁索引号: 0, 1, 2, ... 9*
 
-可以使用 [010 Editor](http://www.sweetscape.com/010editor) 和 [IntelFramebuffer.bt](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/IntelFramebuffer.bt) 脚本来提取有关 FB 和 端口 的详细信息。
+可以使用 [010 Editor](http://www.sweetscape.com/010editor) 和 [IntelFramebuffer.bt](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/IntelFramebuffer.bt) 脚本来提取有关 FB 和 端口 的详细信息。
 
 这些信息可帮助制作自定义补丁。
 
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/ifbt.png)
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/ifbt.png)
 
-macOS 10.14 下，对于 SKL 或更新平台，要取得适合脚本的导出数据，可以使用 *WEG* 的 Debug 版本并加入 `-igfxdump` 启动参数。导出的数据将保存在 `/var/log`目录中。
+macOS 10.14 下，对于 SKL 或更新平台，要取得适合脚本的导出数据，可以使用 *WEB* 的 Debug 版本并加入 `-igfxdump` 启动参数。导出的数据将保存在 `/var/log`目录中。
 
-原始与修补的导出数据可通过使用 *WEG* 的 Debug 版本、使用 `-igfxfbdump` 启动参数，并在 IOReg 中的 `IOService:/IOResources/WhateverGreen` 位置取得。
+原始与修补的导出数据可通过使用 *WEB* 的 Debug 版本、使用 `-igfxfbdump` 启动参数，并在 IOReg 中的 `IOService:/IOResources/WhateverBlue` 位置取得。
 
 ## VGA 输出支持
 大多情况下，在 SKL 或更新平台可直接工作。
@@ -1714,28 +1714,28 @@ EDID 信息可以通过诸如使用 [Linux](https://unix.stackexchange.com/quest
 
 正确的 EDID 必须放入 IGPU 的 *AAPL0**0**,override-no-connect* 字段中，其中第二个 ***0*** 代表显示器编号。
 
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/edid.png) 
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/edid.png) 
 
-某些时候，导出的 EDID 可能与 macOS 不兼容并导致失真。这时，对于一些 EDID 可以使用 [此脚本](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/edid-gen.sh)，它能修正 EDID 并保存到桌面上。
+某些时候，导出的 EDID 可能与 macOS 不兼容并导致失真。这时，对于一些 EDID 可以使用 [此脚本](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/edid-gen.sh)，它能修正 EDID 并保存到桌面上。
 
 ## HDMI 高分屏 60 fps 方案
 #### 除了解决 HDMI 问题，此方案或许对某些型号如 ThinkPad P71/7700HQ/HD630/4K 卡死在 `gIOScreenLockState3` 的情况有所帮助。
 为核显添加 `enable-hdmi20` 属性，或使用 `-cdfon` 启动参数代替，**否则将会黑屏**。
 
 
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/hdmi20.png) 
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/hdmi20.png) 
 
 ## 禁用独显
-为核显添加 `disable-external-gpu` 属性，或使用 `-wegnoegpu` 启动参数代替。
+为核显添加 `disable-external-gpu` 属性，或使用 `-webnoegpu` 启动参数代替。
 
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/dGPU_off.png)  
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/dGPU_off.png)  
 
 ## 修复笔记本内屏返回错误的最大链路速率值的问题 (Dell XPS 15 9570 等高分屏笔记本)
 为核显添加 `enable-dpcd-max-link-rate-fix` 属性或者直接使用 `-igfxmlr` 启动参数以解决系统在点亮内屏时直接崩溃的问题。  
 从 1.3.7 版本开始，此补丁同时修正从屏幕扩展属性里读取的错误速率值问题以解决在 Dell 灵越 7590 系列等新款笔记本上内核崩溃的问题。  
 从 1.4.4 版本开始，如果用户未定义 `dpcd-max-link-rate` 属性的话，此补丁将自动从 DPCD 寻找内屏支持的最大链路速率值。此外此补丁已适配 Ice Lake 平台。
   
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/dpcd_mlr.png)  
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/dpcd_mlr.png)  
 另外可使用 `dpcd-max-link-rate` 这个属性来为笔记本内屏指定一个最大链路速率值。  
 4K 内屏一般使用 `0x14`，1080p 内屏使用 `0x0A` 即可。  
 可选值为 `0x06` (RBR)，`0x0A` (HBR)，`0x14` (HBR2) 以及 `0x1E` (HBR3)。  
@@ -1792,7 +1792,7 @@ igfx: @ (DBG) MLR: [COMM] wrapReadAUX() Maximum link rate 0x14 has been set in t
 这个信号转换器名为 LSPCON，全称 **L**evel **S**hifter and **P**rotocol **Con**verter，并且有两种工作模式。  
 当工作在 LS 模式下，它可以把 DP 转换成 HDMI 1.4 信号。在 PCON 模式下，它可以把 DP 转换成 HDMI 2.0 信号。  
 然而有些厂商在转换器的固件里把 LS 设为了默认的工作模式，这就导致在 macOS 下 HDMI 2.0 连接直接黑屏或者根本不工作。    
-从 1.3.0 版本开始，WhateverGreen 提供了对 LSPCON 的驱动支持。驱动会自动将转换器调为 PCON 模式以解决 HDMI 2.0 输出黑屏问题。  
+从 1.3.0 版本开始，WhateverBlue 提供了对 LSPCON 的驱动支持。驱动会自动将转换器调为 PCON 模式以解决 HDMI 2.0 输出黑屏问题。  
 
 #### 使用前必读
 - LSPCON 驱动适用于所有配备 HDMI 2.0 接口并接在核显上的笔记本和台式机。
@@ -1979,7 +1979,7 @@ igfx: @ (DBG) BLS: [COMM] Processing the request: Current = 0x000009f7; Target =
 
 从上面的内核日志可得知，内屏亮度最低时，对应的亮度寄存器的值为 `0x00`。
 当用户通过快捷键调高亮度时，寄存器值变为 `0x36`，因此你可以指定寄存器最低值为 `0x18` 或 [0x00, 0x36] 区间内的任意一个值来阻止显示器在最低档位时直接黑屏。
-你可能需要安装 DEBUG 版本的 WhateverGreen 并提取内核日志来找到一个适合你笔记本的值。
+你可能需要安装 DEBUG 版本的 WhateverBlue 并提取内核日志来找到一个适合你笔记本的值。
 
 </details>
 
@@ -2023,7 +2023,7 @@ igfx: @ (DBG) BLS: [COMM] Processing the request: Current = 0x00014ead; Target =
 
 ## 修复在 Kaby Lake/Coffee Lake 平台上运行 macOS 13.4 或以上版本的笔记本开机持续3分钟暗屏问题
 
-如果你之前使用“亮度寄存器修复”（也就是 `-igfxblr` 这个启动参数）来解决笔记本开机持续3分钟左右暗屏的问题，在升级到 macOS 13.4 或之后的版本后你会发现该补丁失效了。这是因为苹果简化了显卡驱动中读写寄存器相关的函数，导致编译器优化了函数调用的汇编代码，进而导致“亮度寄存器修复”以及“亮度丝滑器”注册的钩子失效。从 v1.6.5 开始，*WEG* 提供了新的补丁来撤销编译器对亮度调节相关函数的优化以及为 Coffee Lake 平台的笔记本重写了调节亮度的函数，从而解决开机持续3分钟暗屏以及“亮度丝滑器”失效的问题。从 v1.6.6 开始，*WEG* 支持 Kaby Lake 平台。
+如果你之前使用“亮度寄存器修复”（也就是 `-igfxblr` 这个启动参数）来解决笔记本开机持续3分钟左右暗屏的问题，在升级到 macOS 13.4 或之后的版本后你会发现该补丁失效了。这是因为苹果简化了显卡驱动中读写寄存器相关的函数，导致编译器优化了函数调用的汇编代码，进而导致“亮度寄存器修复”以及“亮度丝滑器”注册的钩子失效。从 v1.6.5 开始，*WEB* 提供了新的补丁来撤销编译器对亮度调节相关函数的优化以及为 Coffee Lake 平台的笔记本重写了调节亮度的函数，从而解决开机持续3分钟暗屏以及“亮度丝滑器”失效的问题。从 v1.6.6 开始，*WEB* 支持 Kaby Lake 平台。
 
 请注意这个新补丁仅适用于使用 macOS 13.4 以及以上的 Kaby Lake 或者 Coffee Lake 核显驱动的笔记本用户。你可以为核显添加 `enable-backlight-registers-alternative-fix` 属性或者直接使用 `-igfxblt` 启动参数来启用这个新的补丁。与此同时，你可以删除原“亮度寄存器修复”的 `enable-backlight-registers-fix` 设备属性或者 `-igfxblr` 启动参数。如果你想在 macOS 13.4 或以上系统中使用“亮度丝滑器”，你需要添加 `-igfxblt` 以及 `-igfxbls` 这两个启动参数。
 
@@ -2036,9 +2036,9 @@ igfx: @ (DBG) BLS: [COMM] Processing the request: Current = 0x00014ead; Target =
 
 此补丁通过提前调用优化显示缓冲区分配的函数来修复 DBUF 相关错误。
 用户可通过 `dbuf-optimizer-delay` 设备属性来指定具体的延迟时间（单位为秒，值类型为`Data`）。
-若用户未指定此属性，*WEG* 将使用如下所述的默认值。
+若用户未指定此属性，*WEB* 将使用如下所述的默认值。
 
-社区用户反馈 1 到 3 秒的延迟可在不影响外接显示器的情况下修复 DBUF 相关错误，而 *WEG* v1.5.4 所用的默认 0 秒延迟可能会导致部分笔记本外接显示器时内屏外屏同时花屏的问题。
+社区用户反馈 1 到 3 秒的延迟可在不影响外接显示器的情况下修复 DBUF 相关错误，而 *WEB* v1.5.4 所用的默认 0 秒延迟可能会导致部分笔记本外接显示器时内屏外屏同时花屏的问题。
 从 v1.5.5 开始，默认的延迟时间改为 1 秒，这样用户在通常情况下无需手动添加设备属性来修改延迟时间。
 
 <details>
@@ -2055,27 +2055,27 @@ igfx: @ (DBG) BLS: [COMM] Processing the request: Current = 0x00014ead; Target =
 *兼容性*：
 - 受限制的显卡：HD2000 和 HD2500，它们只能用于 IQSV (因为在白苹果中它们只用来干这个)，无解。
 - 奔腾/赛扬系列核显无解。
-- Haswell 平台的 HDMI 黑屏：请使用 WEG 或使用 macOS 10.13.4 及以上版本。
+- Haswell 平台的 HDMI 黑屏：请使用 WEB 或使用 macOS 10.13.4 及以上版本。
 - SKL 或更新平台的桌面版核显：对两个或更多显示器的支持不完整。在 macOS 10.14 中有改善趋势。
 - 显示器无法在 SKL 或更新平台的桌面版核显上唤醒：通过 DP 连接或升级到 macOS 10.14 或许可以解决。
 
 ## 花屏和设置
 - HD 3000 偶见 UI 花屏：由于 SNB 平台中的视频内存量取决于整个系统内存 —— 因此至少需要 8 GB，但没有稳妥的解决方案。推荐在 BIOS 中安装 [Max TOLUD to Dynamic](https://applelife.ru/posts/595326)（译者注：原文发布于俄文社区，所以并无中文版本）。此外，[这些补丁](https://www.applelife.ru/posts/730496)（译者注：原文发布于俄文社区，所以并无中文版本）也可能有所帮助。
-- “八个苹果问题”、在 UEFI GOP 驱动与 macOS 驱动过度阶段，File Vault 2 背景消失问题（由于 EDID 不兼容）：在 *WEG* 中部分解决。
-- PAVP 冻屏问题（视频播放期间冻结、快速查看中断等）：通过 *WEG* 解决，代价是禁用 HDCP。
+- “八个苹果问题”、在 UEFI GOP 驱动与 macOS 驱动过度阶段，File Vault 2 背景消失问题（由于 EDID 不兼容）：在 *WEB* 中部分解决。
+- PAVP 冻屏问题（视频播放期间冻结、快速查看中断等）：通过 *WEB* 解决，代价是禁用 HDCP。
 - 部分 Haswell 独有问题可通过语义补丁 `framebuffer-cursormem` 解决。
 - macOS 10.14 下，某些 KBL 核显可能会遇到图像文字发虚问题，可临时仿冒核显设备 ID 为 SKL 平台解决。
-- 移动版 CFL 核显的数分钟黑屏问题已由 *WEG* 修复。
+- 移动版 CFL 核显的数分钟黑屏问题已由 *WEB* 修复。
 - BIOS 中缺失更改 FB 内存量选项时：可通过使用 `framebuffer-stolenmem` 和 `framebuffer-fbmem` 语义补丁；或在 UEFI Shell 中手动赋值解决。**否则将会内核崩溃（Kernel Panic）**。[更多解释](https://www.applelife.ru/posts/750369)（译者注：原文发布于俄文社区，所以并无中文版本）
 - 一些核显（如 KBL 和 CFL）在低电压模式 (low power state) 下可能会引发系统不稳定的问题，有时 NVMe 驱动引发的崩溃或许与此有关。目前可行的方案是加入 `forceRenderStandby=0` 启动参数以关闭 RC6 Render Standby。请参阅[这个 issue](https://github.com/acidanthera/bugtracker/issues/1193)以获取更多信息。
 
 *性能和媒体内容*：
-- 在不受支持的配置（NVIDIA + SNB/SKL/KBL; AMD + Ivy）上，与独显的兼容问题已由 *WEG* 修复，从 macOS 10.13.4 起，该问题已被 Apple 官方解决。
-- 受保护的 iTunes 内容问题已由 *WEG* 修复。从 macOS 10.12 起，在 Ivy 或更新平台的核显上，在 iTunes 上观看高清电影时不能没有独显。
+- 在不受支持的配置（NVIDIA + SNB/SKL/KBL; AMD + Ivy）上，与独显的兼容问题已由 *WEB* 修复，从 macOS 10.13.4 起，该问题已被 Apple 官方解决。
+- 受保护的 iTunes 内容问题已由 *WEB* 修复。从 macOS 10.12 起，在 Ivy 或更新平台的核显上，在 iTunes 上观看高清电影时不能没有独显。
 
 在核显非空端口输出下使用 [VDADecoderChecker](https://i.applelife.ru/2019/05/451893_10.12_VDADecoderChecker.zip) 的输出必须类似如下图：
 
-![](https://github.com/acidanthera/WhateverGreen/blob/master/Manual/Img/vda.png)  
+![](https://github.com/acidanthera/WhateverBlue/blob/master/Manual/Img/vda.png)  
 
 对于特殊的 IGPU, IMEI 和 HDEF 设备位置，可使用 [gfxutil](https://github.com/acidanthera/gfxutil): `gfxutil -f IGPU`, `gfxutil -f IMEI`, `gfxutil -f HDEF` 定位。通常来说，IGPU 和 IMEI 的设备位置很标准。
 
